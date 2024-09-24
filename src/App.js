@@ -171,7 +171,7 @@ const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
   const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
-  saveAs(blob, `${users}.xlsx`);
+  saveAs(blob, `users.xlsx`);
 };
   return (
     <div className="app-container">
