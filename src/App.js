@@ -83,20 +83,29 @@ function App() {
   setSelectedUser(user);
   setUpdateWindowVisibility(!UpdateWindowVisivility);
  }
- const UpdateFillteredUsers = (updatedUser) => {
-  const updatedUsers = users.map((user) =>
-    user.id === updatedUser.id ? { ...user, ...updatedUser } : user
-  );
-  
-  const updatedFilteredUsers = filteredUsers.map((user) =>
-    user.id === updatedUser.id ? { ...user, ...updatedUser } : user
-  );
+ const UpdateFillteredUsers = (updatedUser, shouldDelete) => {
+  if (shouldDelete) {
+    const updatedUsers = users.filter((user) => user.id !== updatedUser.id);
+    const updatedFilteredUsers = filteredUsers.filter((user) => user.id !== updatedUser.id);
 
-  setUsers(updatedUsers);
-  setFilteredUsers(updatedFilteredUsers);
+    setUsers(updatedUsers);
+    setFilteredUsers(updatedFilteredUsers);
+  } else {
+    const updatedUsers = users.map((user) =>
+      user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+    );
+    
+    const updatedFilteredUsers = filteredUsers.map((user) =>
+      user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+    );
 
-  console.log('Updated user:', updatedUser);
+    setUsers(updatedUsers);
+    setFilteredUsers(updatedFilteredUsers);
+  }
+
+  console.log(shouldDelete ? 'Deleted user:' : 'Updated user:', updatedUser);
 };
+
 
  const CloseUpdateWindow=()=>
   {
@@ -180,7 +189,7 @@ const exportToExcel = () => {
         <button  className ="menu-button" onClick={handleFilterShow}>Фільтри</button>
       </div>  
       <div>
-        <button  className ="menu-button" onClick={handleFilterShow}>Фільтри</button>
+        <button  className ="menu-button" onClick={handleSortShow}>Сортування</button>
       </div> 
       <div>
         <button className ="menu-button" onClick={exportToExcel}>експорт ексель</button>
