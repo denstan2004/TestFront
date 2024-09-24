@@ -5,6 +5,8 @@ import axios from 'axios';
 import Filter from './Filter';
 import UpdateWindow from './UpdateWindow';
 import SortWindow from './SortWindow';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -163,14 +165,25 @@ function App() {
 const handleSortShow=()=>{
   setSortWindowVisibility(!sortWindowVisibility)
 }
+const exportToExcel = () => {
+  const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
+  saveAs(blob, `${users}.xlsx`);
+};
   return (
     <div className="app-container">
       <div className="menu-buttons">
       <div>
         <button  className ="menu-button" onClick={handleFilterShow}>Фільтри</button>
-      </div>
+      </div>  
       <div>
-        <button className ="menu-button" onClick={handleSortShow}>Сортувати</button>
+        <button  className ="menu-button" onClick={handleFilterShow}>Фільтри</button>
+      </div> 
+      <div>
+        <button className ="menu-button" onClick={exportToExcel}>експорт ексель</button>
       </div>
       </div>
       <div className="sort-window">
